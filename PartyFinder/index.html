@@ -25,23 +25,29 @@
                 </ul>
             </div>
             <div id="create" class="ui-content">
-                <label for="party-type">Type de soirée</label>
-                <select id="party-type">
-                    <option value="1">Jeux de société</option>
-                    <option value="2">Jeux de rôle</option>
-                    <option value="3">Jeux à boire</option>
-                    <option value="4">Jeux vidéo</option>
-                    <option value="5">Jeux coquins</option>
-                </select>
-                <label for="party-desc">Description</label>
-                <textarea id="party-desc"></textarea>
-                <label>Nombre de places disponibles</label>
-                <input type="range" value="1" min="1" max="50" data-role="slider"/>
-                <label for="address">Adresse de la soirée</label>
-                <textarea id="address"></textarea>
-                <input id="use-my-position"type="button" value="Utiliser ma position" />
-                <div id="localisation-error" class="ui-content" data-overlay-theme="b" data-role="popup">Vous devez activer le service de localisation.</div>
-                <div id="internet-error" class="ui-content" data-overlay-theme="b" data-role="popup">Il y a un problème avec votre connexion internet. Impossible de continuer</div>
+                <form id="create-form" action="http://ovent.net/PartyFinder/party.php" method="post">
+                    <label for="party-type">Type de soirée</label>
+                    <select name="type" id="party-type">
+                        <option value="1">Jeux de société</option>
+                        <option value="2">Jeux de rôle</option>
+                        <option value="3">Jeux à boire</option>
+                        <option value="4">Jeux vidéo</option>
+                        <option value="5">Jeux coquins</option>
+                    </select>
+                    <label for="party-desc">Description</label>
+                    <textarea name="description" id="party-desc"></textarea>
+                    <label>Nombre de places disponibles</label>
+                    <input type="range" name="slot" value="1" min="1" max="50" data-role="slider" />
+                    <label for="address">Adresse de la soirée</label>
+                    <textarea id="address" name="address"></textarea>
+                    <input id="use-my-position" type="button" value="Utiliser ma position" />
+                    <input type="submit" name="submit" value="Envoyer" />
+                    <input type="hidden" id="lat" name="lat" />
+                    <input type="hidden" id="long" name="long" />
+                    <input type="hidden" name="function" value="addParty" />
+                    <div id="localisation-error" class="ui-content" data-overlay-theme="b" data-role="popup">Vous devez activer le service de localisation.</div>
+                    <div id="internet-error" class="ui-content" data-overlay-theme="b" data-role="popup">Il y a un problème avec votre connexion internet. Impossible de continuer</div>
+                </form>
             </div>
             <div id="pending" class="ui-content">
                 <ul data-role="listview">

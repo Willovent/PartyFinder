@@ -25,6 +25,19 @@ $(function () {
         $.mobile.loading("show");
         navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationFail, { timeout: 10000 });
     })
+
+    //CREATE SECTION 
+    $('#create-form').submit(function (event) {
+        $.post(this.action, $(this).serialize(),null,"json")
+        .done(function (data) {
+            alert(data.message);
+        })
+        .fail(function (data) {
+            alert(data.statusCode);
+        });
+        event.preventDefault();
+        return false;
+    });
 });
 $(document).on("pageload", "#party", function() {
     $('#create').click();
@@ -81,6 +94,8 @@ function ProfilViewModel() {
 //LOCATION CALLBACK
 
 function onLocationSuccess(position) {
+    $('#lat').val(position.coords.latitude);
+    $('#long').val(position.coords.longitude);
     $.get("http://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}".format(position.coords.latitude, position.coords.longitude),
         function (data) {
             console.log(data);
@@ -130,7 +145,11 @@ $(document).on("pagecontainerchange", function () {
             $('[href="#party"').data("direction", "reverse");
             $('[href="#profil"').data("direction", "");
             //fix du à la map qui est collapse quand on est pas sur la page et qui se fout n'importe comment du coup quand on revient dessus
+            if (map)
+                var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
+            if (map)
+                map.setCenter(center);
             break;
         case "profil":
             $('[href="#map"').data("direction", "reverse");
