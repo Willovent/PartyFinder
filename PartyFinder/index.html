@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>PartyFinder</title>
+
+    <!-- PartyFinder references -->
+    <link href="css/index.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/square-theme/jquery.mobile.squareui.min.css" />
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/knockout-3.2.0.js"></script>
+    <script src="scripts/JQuery/jquery.min.js"></script>
+    <script src="scripts/party-finder.js"></script>
+    <script src="scripts/JQuery/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+    <div data-role="page" class="ui-page-active" id="party" data-theme="b">
+        <div data-role="tabs" class="ui-content tabs-as-header">
+            <div data-role="navbar" data-theme="d">
+                <ul>
+                    <li><a href="#create" class="ui-btn-active ui-btn ui-state-persist ui-nodisc-icon" data-icon="plus">Créer une Party</a></li>
+                    <li><a href="#pending" class="ui-nodisc-icon" data-icon="bullets">Liste d'attente</a></li>
+                </ul>
+            </div>
+            <div id="create" class="ui-content">
+                <label for="party-type">Type de soirée</label>
+                <select id="party-type">
+                    <option value="1">Jeux de société</option>
+                    <option value="2">Jeux de rôle</option>
+                    <option value="3">Jeux à boire</option>
+                    <option value="4">Jeux vidéo</option>
+                    <option value="5">Jeux coquins</option>
+                </select>
+                <label for="party-desc">Description</label>
+                <textarea id="party-desc"></textarea>
+                <label>Nombre de places disponibles</label>
+                <input type="range" value="1" min="1" max="50" data-role="slider"/>
+                <label for="address">Adresse de la soirée</label>
+                <textarea id="address"></textarea>
+                <input id="use-my-position"type="button" value="Utiliser ma position" />
+                <div id="localisation-error" class="ui-content" data-overlay-theme="b" data-role="popup">Vous devez activer le service de localisation.</div>
+                <div id="internet-error" class="ui-content" data-overlay-theme="b" data-role="popup">Il y a un problème avec votre connexion internet. Impossible de continuer</div>
+            </div>
+            <div id="pending" class="ui-content">
+                <ul data-role="listview">
+                    <li><a href="#">Acura</a></li>
+                    <li><a href="#">Audi</a></li>
+                    <li><a href="#">BMW</a></li>
+                    <li><a href="#">Cadillac</a></li>
+                    <li><a href="#">Ferrari</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="map" data-theme="d">
+        <div data-role="header"><h1>Map</h1></div>
+        <div role="main" class="ui-content">
+            <div id="googleMap"></div>
+        </div>
+    </div>
+    <div data-role="page" id="profil" data-theme="e">
+        <div data-role="header"><h1>Profil</h1></div>
+        <div role="main" class="ui-content">
+            <div class="profil-picture" id="profil-picture" data-bind="style: { backgroundImage: 'url(\'' + photo() + '\')' }"></div>
+            <div id="age-contener">
+                <label for="age">Âge</label>
+                <input type="number" id="age" data-theme="b" data-highlight="true" data-bind="value:age" step="1" />
+            </div>
+            <div id="sex-contener">
+                <label for="sex">Sexe</label>
+                <select name="select-ismale" id="sex" data-bind="jqmFlip: isMan" data-role="slider">
+                    <option value="false">Femme</option>
+                    <option value="true">Homme</option>
+                </select>
+            </div>
+            <div class="ui-field-contain">
+                <label for="prenom">Prenom</label>
+                <input data-bind="value: lastname" type="text" id="prenom" />
+            </div>
+            <label for="nom">Nom</label>
+            <input data-bind="value: firstname" type="text" id="nom" />
+        </div>
+    </div>
+    <div data-role="footer" data-position="fixed" data-theme="d">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#party" class="ui-nodisc-icon" data-transition="slide" data-icon="party">Party</a></li>
+                <li><a href="#map" class="ui-nodisc-icon " data-transition="slide" data-icon="map">Map</a></li>
+                <li><a href="#profil" class="ui-nodisc-icon" data-transition="slide" data-icon="profil">Profil</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+</body>
+</html>
