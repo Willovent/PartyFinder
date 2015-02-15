@@ -110,6 +110,17 @@
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="css\square-theme\fonts\Flat-UI-Icons-24.woff" />
+    <Content Include="css\square-theme\fonts\lato-black.woff" />
+    <Content Include="css\square-theme\fonts\lato-bold.woff" />
+    <Content Include="css\square-theme\fonts\lato-italic.woff" />
+    <Content Include="css\square-theme\fonts\lato-regular.woff" />
+    <Content Include="css\square-theme\images\ajax-loader.gif" />
+    <Content Include="css\square-theme\images\icons-18-black.png" />
+    <Content Include="css\square-theme\images\icons-18-white.png" />
+    <Content Include="css\square-theme\images\icons-36-black.png" />
+    <Content Include="css\square-theme\images\icons-36-white.png" />
+    <Content Include="css\square-theme\jquery.mobile.squareui.min.css" />
     <Content Include="plugins\org.apache.cordova.camera\.fetch.json" />
     <Content Include="plugins\org.apache.cordova.camera\CONTRIBUTING.md" />
     <Content Include="plugins\org.apache.cordova.camera\doc\de\index.md" />

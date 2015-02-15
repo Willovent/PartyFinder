@@ -63,15 +63,23 @@ $(function () {
     initialize();
     //CREATE SECTION 
     $('#create-form').submit(function (event) {
-        $.post(this.action, $(this).serialize(),null,"json")
-        .done(function (data) {
-            if (data.message == 'success') {
-                localStorage['partyId'] = data.id;
-            }
-        })
-        .fail(function (data) {
-            console.log(data.responseText);
-        });
+        var form = this;
+        navigator.geolocation.getCurrentPosition(function (position) {
+            $('#lat').val(position.coords.latitude);
+            $('#long').val(position.coords.longitude);
+            $.post(form.action, $(form).serialize(), null, "json")
+            .done(function (data) {
+                if (data.message == 'success') {
+                    localStorage['partyId'] = data.id;
+                }
+            })
+            .fail(function (data) {
+                console.log(data.responseText);
+            });
+        }, function () {
+            alert('error');
+        }, { timeout: 10000 });
+        
         event.preventDefault();
         return false;
     });
