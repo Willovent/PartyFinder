@@ -10,5 +10,6 @@
   <preference name="windows-phone-target-version" value="8.1" />
   <vs:plugin name="org.apache.cordova.camera" version="0.3.6-dev" />
   <vs:plugin name="org.apache.cordova.geolocation" version="0.3.13-dev" />
+  <vs:plugin name="org.apache.cordova.device" version="0.3.1-dev" />
   <vs:platformSpecificValues />
 </widget>

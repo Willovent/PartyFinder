@@ -1,4 +1,5 @@
 ﻿var map;
+var serviceLocation = 'http://ovent.net/PartyFinder/party.php';
 //maps 
 function initialize() {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -8,13 +9,47 @@ function initialize() {
             zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        map = new google.maps.Map(document.getElementById("googleMap"), mapProp);        
+        $.get(serviceLocation, { function: 'partiesAroundMe', lat: position.coords.latitude, long: position.coords.longitude, dist: 15 }, null, 'json')
+        .done(function (data) {
+            if (data.message == "success") {
+                console.log(data.parties)
+                for (party in data.parties) {
+                    var partyOptions = {
+                        strokeColor: typeColor[data.parties[party].type - 1],
+                        strokeOpacity: 0.8,
+                        clickable: true,
+                        strokeWeight: 2,
+                        fillColor: typeColor[data.parties[party].type-1],
+                        fillOpacity: 0.35,
+                        map: map,
+                        center: new google.maps.LatLng(data.parties[party].lat, data.parties[party].long),
+                        radius: 100
+                    };
+                    partyCircle = new google.maps.Circle(partyOptions);
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: data.parties[party].description + '\
+</br> Nombre de places restantes : ' + data.parties[party].slot
+                    });
+                    google.maps.event.addListener(partyCircle, 'click', function (ev) {
+                        infoWindow.setPosition(partyCircle.getCenter());
+                        infoWindow.open(map);
+                    });
+                }
+            }
+            else {
+                console.log(data);
+            }
+        })
+        .fail(function (data) {
+            console.log(data.responseText);
+        });
     }, function() {
         alert('error');
-    }, { timeout: 100000 });
+    }, { timeout: 10000 });
     
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+
 
 
 $(function () {
@@ -24,20 +59,25 @@ $(function () {
     $('#use-my-position').click(function () {
         $.mobile.loading("show");
         navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationFail, { timeout: 10000 });
-    })
-
+    });
+    initialize();
     //CREATE SECTION 
     $('#create-form').submit(function (event) {
         $.post(this.action, $(this).serialize(),null,"json")
         .done(function (data) {
-            alert(data.message);
+            if (data.message == 'success') {
+                localStorage['partyId'] = data.id;
+            }
         })
         .fail(function (data) {
-            alert(data.statusCode);
+            console.log(data.responseText);
         });
         event.preventDefault();
         return false;
     });
+
+    //Retrieve party around
+
 });
 $(document).on("pageload", "#party", function() {
     $('#create').click();
@@ -145,11 +185,11 @@ $(document).on("pagecontainerchange", function () {
             $('[href="#party"').data("direction", "reverse");
             $('[href="#profil"').data("direction", "");
             //fix du à la map qui est collapse quand on est pas sur la page et qui se fout n'importe comment du coup quand on revient dessus
-            if (map)
+            if (map){
                 var center = map.getCenter();
-            google.maps.event.trigger(map, "resize");
-            if (map)
+                google.maps.event.trigger(map, "resize");
                 map.setCenter(center);
+            }
             break;
         case "profil":
             $('[href="#map"').data("direction", "reverse");
@@ -211,3 +251,4 @@ ko.extenders.booleanValue = function (target) {
     target.formattedValue(target());
     return target;
 };
+var typeColor = ['#5099B2', '#FFA6BB', '#8CE1FF', '#CCC55C', '#B2AD59']
