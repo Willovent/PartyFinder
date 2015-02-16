@@ -1,54 +1,5 @@
 ﻿var map;
 var serviceLocation = 'http://ovent.net/PartyFinder/party.php';
-//maps 
-function initialize() {
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var LatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var mapProp = {
-            center: LatLng,
-            zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById("googleMap"), mapProp);        
-        $.get(serviceLocation, { function: 'partiesAroundMe', lat: position.coords.latitude, long: position.coords.longitude, dist: 15 }, null, 'json')
-        .done(function (data) {
-            if (data.message == "success") {
-                console.log(data.parties)
-                for (party in data.parties) {
-                    var partyOptions = {
-                        strokeColor: typeColor[data.parties[party].type - 1],
-                        strokeOpacity: 0.8,
-                        clickable: true,
-                        strokeWeight: 2,
-                        fillColor: typeColor[data.parties[party].type-1],
-                        fillOpacity: 0.35,
-                        map: map,
-                        center: new google.maps.LatLng(data.parties[party].lat, data.parties[party].long),
-                        radius: 100
-                    };
-                    partyCircle = new google.maps.Circle(partyOptions);
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: data.parties[party].description + '\
-</br> Nombre de places restantes : ' + data.parties[party].slot
-                    });
-                    google.maps.event.addListener(partyCircle, 'click', function (ev) {
-                        infoWindow.setPosition(partyCircle.getCenter());
-                        infoWindow.open(map);
-                    });
-                }
-            }
-            else {
-                console.log(data);
-            }
-        })
-        .fail(function (data) {
-            console.log(data.responseText);
-        });
-    }, function() {
-        alert('error');
-    }, { timeout: 10000 });
-    
-}
 
 
 
@@ -259,4 +210,8 @@ ko.extenders.booleanValue = function (target) {
     target.formattedValue(target());
     return target;
 };
-var typeColor = ['#5099B2', '#FFA6BB', '#8CE1FF', '#CCC55C', '#B2AD59']
+var typeValues = [{ color: '#5099B2', text: 'Jeux de société' },
+    { color: '#FFA6BB', text: 'Jeux de rôle' },
+    { color: '#8CE1FF', text: 'Jeux à boire' },
+    { color: '#CCC55C', text: 'Jeux vidéos' },
+    { color: '#B2AD59', text: 'Jeux coquins' }]

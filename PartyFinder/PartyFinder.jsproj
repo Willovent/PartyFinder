@@ -247,6 +247,7 @@
     <Content Include="plugins\org.apache.cordova.geolocation\www\geolocation.js" />
     <Content Include="plugins\org.apache.cordova.geolocation\www\Position.js" />
     <Content Include="plugins\org.apache.cordova.geolocation\www\PositionError.js" />
+    <Content Include="scripts\maps-functions.js" />
     <Content Include="scripts\utils.js" />
     <Folder Include="images\" />
     <Content Include="merges\android\scripts\android2.3-jscompat.js" />
